@@ -1,3 +1,4 @@
+import PitchJourney from "./PitchJourney";
 import { useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { hz, midi, noteName } from "./pitch";
@@ -42,6 +43,7 @@ function detectPitch(samples: Float32Array, sampleRate: number): number | null {
   return sampleRate / best;
 }
 function App() {
+  const [page, setPage] = useState<"classic" | "journey">("classic");
   const [mode, setMode] = useState("Major scale"),
     [root, setRoot] = useState(60),
     [step, setStep] = useState(0),
@@ -189,6 +191,11 @@ function App() {
   };
   return (
     <main>
+      <nav className="singlab-nav" style={{display:"flex",gap:12,marginBottom:20}}>
+        <button className={page === "classic" ? "primary" : "secondary"} style={{padding:12,borderRadius:10}} onClick={() => setPage("classic")}>Classic Practice</button>
+        <button className={page === "journey" ? "primary" : "secondary"} style={{padding:12,borderRadius:10}} onClick={() => { if (listening) stop(); setPage("journey"); }}>Pitch Journey</button>
+      </nav>
+      {page === "journey" ? <PitchJourney /> : <>
       <header>
         <div className="brand">
           ♫ <span>SingLab</span>
@@ -334,6 +341,7 @@ function App() {
         All pitch processing stays on your device. For iPhone Safari, open over
         HTTPS and allow microphone access.
       </footer>
+      </>}
     </main>
   );
 }

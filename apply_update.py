@@ -15,5 +15,9 @@ if 'PitchJourney' not in s:
     print('Updated navigation in src/main.tsx')
 else:print('Navigation already installed; skipping.')
 for name in ['PitchJourney.tsx','PitchJourney.css']:
-    shutil.copy2(root/'src'/name,project/'src'/name)
+    source = root / 'src' / name
+    destination = project / 'src' / name
+
+    if source.resolve() != destination.resolve():
+        shutil.copy2(source, destination)    
     print('Installed src/'+name)
